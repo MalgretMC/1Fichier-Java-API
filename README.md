@@ -27,7 +27,7 @@ There are two ways to create a FastMap :
 
 - Classic way :
 
-      FastMap parameters = new FastMap((short) 1); // Max parameter length
+      FastMap parameters = new FastMap((short) 1); // Maximum number of parameters
       parameters.insert("key1", value);
 
 # Examples using 1Fichier API
