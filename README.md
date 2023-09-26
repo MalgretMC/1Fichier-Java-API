@@ -65,8 +65,6 @@ There are two ways to create a FastMap :
 
 - Upload a Unique File
 
-/!\ Be Careful : Uploading an empty file will throw an error /!\
-
       FastMap parameters = new FastMap((short) 2);
       parameters.insert("did", 0); // Upload at root
       parameters.insert("dpass", "w12345678x"); // Password to access files
