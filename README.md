@@ -4,6 +4,10 @@ Java Integration of 1Fichier website's API
 
 Jar file can be found in files above : 1FichierAPI.jar
 
+You can check 1Fichier Website's API here : https://api.1fichier.com/
+
+/!\ Free Users can only use Upload System /!\
+
 # Create Instance
 
     FichierAPI instance = new FichierAPI( YOUR BEARER_TOKEN );
@@ -35,8 +39,6 @@ There are two ways to create a FastMap :
       parameters.insert("key1", value);
 
 # Examples using 1Fichier API
-
-You can check 1Fichier Website's API here : https://api.1fichier.com/
 
 - Delete Files
 
