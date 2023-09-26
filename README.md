@@ -67,31 +67,31 @@ There are two ways to create a FastMap :
 
 /!\ Be Careful : Uploading an empty file will throw an error /!\
 
-        FastMap parameters = new FastMap((short) 2);
-        parameters.insert("did", 0); // Upload at root
-        parameters.insert("dpass", "w12345678x"); // Password to access files
-        
-        FastMap[] result = instance.upload(parameters, 
-                new FastMap[] { 
-                    FastMap.of("file_name", "test.txt", "file_path", new File("test.txt").toPath() 
-                };
-
-        String fileLink = result[0].get("file_url");
+    FastMap parameters = new FastMap((short) 2);
+    parameters.insert("did", 0); // Upload at root
+    parameters.insert("dpass", "w12345678x"); // Password to access files
+    
+    FastMap[] result = instance.upload(parameters, 
+            new FastMap[] { 
+                FastMap.of("file_name", "test.txt", "file_path", new File("test.txt").toPath() 
+            };
+    
+    String fileLink = result[0].get("file_url");
 
 - Upload Files & Folders (New!)
 
 For this example, we take a folder that represents a minecraft server :
 
-        $ ls D:/serv
-        banned-ips.json      logs/                                  spigot.yml
-        banned-players.json  ops.json                               usercache.json
-        bukkit.yml           permissions.yml                        whitelist.json
-        commands.yml         plugins/                               world/
-        eula.txt             server.properties                      world_nether/
-        help.yml             spigot-1.8.8-R0.1-SNAPSHOT-latest.jar  world_the_end/
-        
-        $ ls D:/serv/world
-        data/  level.dat  playerdata/  region/  session.lock  uid.dat
+    $ ls D:/serv
+    banned-ips.json      logs/                                  spigot.yml
+    banned-players.json  ops.json                               usercache.json
+    bukkit.yml           permissions.yml                        whitelist.json
+    commands.yml         plugins/                               world/
+    eula.txt             server.properties                      world_nether/
+    help.yml             spigot-1.8.8-R0.1-SNAPSHOT-latest.jar  world_the_end/
+    
+    $ ls D:/serv/world
+    data/  level.dat  playerdata/  region/  session.lock  uid.dat
 
 The Full Working class to upload this folder can be found in examples/FichierUploader.java
 
