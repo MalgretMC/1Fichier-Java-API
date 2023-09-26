@@ -61,6 +61,19 @@ You can check 1Fichier Website's API here : https://api.1fichier.com/
 
       FastMap result = instance.postRequest(PostRequest.MOVE_FILES, parameters); // In a try catch block
 
+- Upload a Unique File
+
+        FastMap parameters = new FastMap((short) 2);
+        parameters.insert("did", 0); // Upload at root
+        parameters.insert("dpass", "w12345678x"); // Password to access files
+        
+        FastMap[] result = instance.upload(parameters, 
+                new FastMap[] { 
+                    FastMap.of("file_name", "test.txt", "file_path", new File("test.txt").toPath() 
+                };
+
+        String fileLink = result[0].get("file_url");
+
 - Upload Files & Folders (New!)
 
 For this example, we take a folder that represents a minecraft server :
