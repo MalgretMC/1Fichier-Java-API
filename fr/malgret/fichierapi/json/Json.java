@@ -5,6 +5,52 @@ public class Json {
 	public static final char QUOT_MARK = '"';
 	
 	/*
+	 * 
+	 * Encode Specific Object in Json
+	 * 
+	 */
+	
+	private static Object encodedValue(Object value)
+	{
+		if(value instanceof Object[])
+		{
+			StringBuilder builder = new StringBuilder();
+			Object[] array = (Object[]) value;
+			
+			builder.append(encodedValue(array[0]));
+			
+			for(short i = 1; i < array.length; i++)
+			{
+				builder.append("," + encodedValue(array[i]));
+			}
+			
+			return "[" + builder.toString() + "]";
+		}
+		else if(value instanceof FastMap)
+		{
+			return Json.encode((FastMap) value);
+		}
+		else if(value instanceof String)
+		{
+			return Json.QUOT_MARK + String.valueOf(value) + Json.QUOT_MARK;
+		}
+		
+		return value;
+	}
+	
+	/*
+	 * 
+	 * Encode a FastMap Entry
+	 * 
+	 */
+	
+	private static String encodeEntry(String key, Object value)
+	{
+		return QUOT_MARK + key + QUOT_MARK + ":" + encodedValue(value);
+	}
+	
+	/*
+	 * 
 	 * Encode FastMap object in JSON
 	 * 
 	 */
@@ -12,16 +58,18 @@ public class Json {
 	public static String encode(FastMap parameters)
 	{
 		StringBuilder builder = new StringBuilder();
+		short i = 0;
 		
-		for(short i = 0; i < parameters.length; i++)
+		builder.append(encodeEntry(parameters.getKey(i), parameters.getValue(i)));
+		
+		for(i++; i < parameters.length; i++)
 		{
-			builder.append("," + QUOT_MARK + parameters.getKey(i) + QUOT_MARK + ":" 
-					+ parameters.getEncodedValue(i));
+			builder.append("," + encodeEntry(parameters.getKey(i), parameters.getValue(i)));
 		}
 		
 		if(builder.length() == 0) return "";
 		
-		return "{" + builder.substring(1).toString() + "}";
+		return "{" + builder.toString() + "}";
 	}
 	
 	/*
@@ -33,55 +81,86 @@ public class Json {
 	
 	public static FastMap decode(String json)
 	{
-		String[] parametersTab = json.substring(1, json.length()-1).split(","); // Get all key : value
-		FastMap parametersMap = new FastMap((byte) parametersTab.length); // Presume max size
+		char[] chars = json.toCharArray();
+		Object[] objects = new Object[128];
+		byte objectsSize = 0;
 		
-		for(short i = 0, j = 0, k = 0; i < parametersTab.length; i++) // j and k count the numbers of array
+		JsonCharacter waitingFor = null;
+		
+		for(short i = (short) 2, j = i; i < chars.length; i++)
 		{
-			String[] parameter = parametersTab[i].split(QUOT_MARK + "\\:"); // Get current parameter
+			char current = chars[i];
 			
-			String key = parameter[0].substring(1);
-			Object value = parameter[1].replace(String.valueOf(QUOT_MARK), ""); // Replace QUOT MARK if a String
-			
-			if(parameter[1].startsWith("[")) // Array
+			if(waitingFor != null)
 			{
-				String arrayStr = json.split("\\:\\[")[++j].split("\\]")[0]; // Get Array's content
+				if(current != waitingFor.getEnd() && (waitingFor != JsonCharacter.NO_MARK || JsonCharacter.fromEnd(current) == null)) continue;
 				
-				i--;
+				Object toAdd = null;
 				
-				if(arrayStr.startsWith("{")) // If there are json contents
+				switch(waitingFor)
 				{
-					arrayStr = arrayStr.substring(1, arrayStr.length()-1);
-					
-					String[] jsonArray = arrayStr.split("\\},\\{");
-					FastMap[] mapsArray = new FastMap[jsonArray.length];
-					
-					for(short l = 0; l < jsonArray.length; l++)
-					{
-						mapsArray[l] = decode("{" + jsonArray[l] + "}");
-						i+= mapsArray[l].length;
-					}
-					
-					value = mapsArray;
+					case ACCOLADE:
+						
+						String toDecode = new String(chars, j, i++-j);
+						
+						toAdd = decode("{" + toDecode + "}");
+						break;
+					case BRACKET:
+						String decoding = new String(chars, j+1, i++-j-2);
+						
+						if(chars[j] == '{') {
+							String[] splited = decoding.split("\\},\\{");
+							
+							FastMap[] map = new FastMap[splited.length];
+							
+							for(short s = 0; s < splited.length; s++) {
+								
+								map[s] = decode("{" + splited[s] + "}");
+							}
+							
+							toAdd = map;
+						} else {
+							toAdd = decoding.split(",");
+						}
+						break;
+					case NO_MARK:
+						toAdd = Long.parseLong(new String(chars, j, i-j));
+						break;
+					default:
+						toAdd = new String(chars, j, i++-j);
+
+						break;
 				}
-				else // If not
-				{
-					Object[] array = arrayStr.replace(String.valueOf(QUOT_MARK), "").split(",");
-					value = array;
-					
-					i += array.length;
-				}
-			} 
-			else if(parameter[1].startsWith("{")) // if there are json contents
-			{
-				FastMap map = decode("{" + json.split(key + "\\:\\{")[++k].split("}")[0] + "}");
-				value = map;
 				
-				i += map.length;
+				objects[objectsSize++] = toAdd;
+				waitingFor = null;
+				
+				j = (short) ((++i) + 1);
 			}
 			
-			parametersMap.insert(key, value);
+			if(current == ':')
+			{
+				String key = new String(chars, j, i-j-1);
+				
+				objects[objectsSize++] = key;
+				
+				if((waitingFor = JsonCharacter.fromStart(chars[++i])) == null) {
+					waitingFor = JsonCharacter.NO_MARK;
+					i--;
+				}
+				
+				j = (short) (i+1);
+			}
 		}
+		
+		FastMap parametersMap = new FastMap((short) (objects.length/2));
+		
+		for(byte i = 0; i < objectsSize; i++)
+		{
+			parametersMap.insert((String) objects[i++], objects[i]);
+		}
+		
+		objects = null;
 		
 		return parametersMap;
 	}

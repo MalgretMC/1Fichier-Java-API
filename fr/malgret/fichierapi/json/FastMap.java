@@ -53,48 +53,5 @@ public class FastMap {
 		
 		return null;
 	}
-	
-	/*
-	 * Encode value information in JSON
-	 * 
-	 */
-	
-	public Object getEncodedValue(short index)
-	{
-		Object current = values[index];
-		
-		if(current instanceof FastMap[])
-		{
-			StringBuilder builder = new StringBuilder();
-			
-			for(FastMap map : (FastMap[]) current)
-			{
-				builder.append("," + Json.encode((FastMap) map));
-			}
-			
-			return "[" + builder.substring(1).toString() + "]";
-		}
-		else if(current instanceof FastMap)
-		{
-			return Json.encode((FastMap) current);
-		}
-		else if(current instanceof String[])
-		{
-			StringBuilder builder = new StringBuilder();
-			
-			for(String str : (String[]) current)
-			{
-				builder.append("," + Json.QUOT_MARK + String.valueOf(str) + Json.QUOT_MARK);
-			}
-			
-			return "[" + builder.substring(1).toString() + "]";
-		}
-		else if(current instanceof String)
-		{
-			return Json.QUOT_MARK + String.valueOf(current) + Json.QUOT_MARK;
-		}
-		
-		return current;
-	}
 
 }

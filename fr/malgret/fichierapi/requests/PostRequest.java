@@ -1,6 +1,6 @@
 package fr.malgret.fichierapi.requests;
 
-public enum PostRequest {
+public enum PostRequest implements Request {
 	
 	DOWNLOAD(RequestType.DOWNLOAD, "/get_token.cgi"),
 	LIST_FILES(RequestType.FILES, "/ls.cgi"),
@@ -24,8 +24,6 @@ public enum PostRequest {
 	LIST_REMOTE_UPLOAD(RequestType.REMOTE_UPLOAD, "/ls.cgi"),
 	INFORMATIONS_REMOTE_UPLOAD(RequestType.REMOTE_UPLOAD, "/info.cgi"),
 	REQUEST_REMOTE_UPLOAD(RequestType.REMOTE_UPLOAD, "/request.cgi");
-
-	private final String URL_START = "https://api.1fichier.com/v1/";
 	
 	private final RequestType reqType;
 	private final String urlEnd;
