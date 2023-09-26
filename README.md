@@ -63,6 +63,8 @@ You can check 1Fichier Website's API here : https://api.1fichier.com/
 
 - Upload a Unique File
 
+/!\ Be Careful : Uploading a empty file will throw an error /!\
+
         FastMap parameters = new FastMap((short) 2);
         parameters.insert("did", 0); // Upload at root
         parameters.insert("dpass", "w12345678x"); // Password to access files
