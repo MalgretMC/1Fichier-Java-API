@@ -73,10 +73,10 @@ There are two ways to create a FastMap :
     
     FastMap[] result = instance.upload(parameters, 
         new FastMap[] { 
-            FastMap.of("file_name", "test.txt", "file_path", new File("test.txt").toPath() 
-    };
+            FastMap.of("file_name", "test.txt", "file_path", new File("test.txt").toPath()) 
+    });
     
-    String fileLink = result[0].get("file_url");
+    String fileLink = (String) result[0].get("file_url");
 
 - Upload Files & Folders (New!)
 
