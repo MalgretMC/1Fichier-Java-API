@@ -67,7 +67,7 @@ There are two ways to create a FastMap :
 
 You can upload files without BEARER_TOKEN, but the files won't be stock in your account's folders.
 
-* Upload a Unique File
+-> Upload a Unique File
 
 /!\ Be Careful : Uploading an empty file will throw an error /!\
 
@@ -82,7 +82,7 @@ You can upload files without BEARER_TOKEN, but the files won't be stock in your 
     
     String fileLink = (String) result[0].get("file_url");
 
-* Upload Multiple Files & Folders (New!)
+-> Upload Multiple Files & Folders (New!)
 
 For this example, we take a folder that represents a minecraft server :
 
