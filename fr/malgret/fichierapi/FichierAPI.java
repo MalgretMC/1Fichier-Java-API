@@ -80,10 +80,10 @@ public class FichierAPI {
 		conn.setDoOutput(true);
 		conn.setUseCaches(false);
 		conn.setRequestMethod("POST");
-        conn.setRequestProperty("Connection", "Keep-Alive");
-        conn.setRequestProperty("Cache-Control", "no-cache");
-        conn.setRequestProperty("Authorization", "Bearer " + BEARER_TOKEN);
-        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
+        	conn.setRequestProperty("Connection", "Keep-Alive");
+        	conn.setRequestProperty("Cache-Control", "no-cache");
+        	conn.setRequestProperty("Authorization", "Bearer " + BEARER_TOKEN);
+        	conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
 		
 		String CRLF = "\r\n";
 		
@@ -94,34 +94,34 @@ public class FichierAPI {
 		for(byte i = 0; i < parameters.length; i++)
 		{
 			writer.append("--" + BOUNDARY).append(CRLF);
-	        writer.append("Content-Disposition: form-data; name=\"" + parameters.getKey(i) + "\"").append(CRLF);
-	        writer.append(CRLF);
-	        writer.append("" + parameters.getValue(i)).append(CRLF);
+	        	writer.append("Content-Disposition: form-data; name=\"" + parameters.getKey(i) + "\"").append(CRLF);
+	        	writer.append(CRLF);
+	        	writer.append("" + parameters.getValue(i)).append(CRLF);
 		}
 		
-	    for(short i = 0; i < files.length; i++)
-	    {
-	    	FastMap file = files[i];
+	    	for(short i = 0; i < files.length; i++)
+	    	{
+	    		FastMap file = files[i];
 	    	
-	    	writer.append("--" + BOUNDARY).append(CRLF);
-	        writer.append("Content-Disposition: form-data; name=\"file[]\"; filename=\"" + file.getValue((short) 0) + "\"").append(CRLF);
-	        writer.append("Content-Type: application/octet-stream").append(CRLF);
-	        writer.append(CRLF).flush();
+	    		writer.append("--" + BOUNDARY).append(CRLF);
+	        	writer.append("Content-Disposition: form-data; name=\"file[]\"; filename=\"" + file.getValue((short) 0) + "\"").append(CRLF);
+	        	writer.append("Content-Type: application/octet-stream").append(CRLF);
+	        	writer.append(CRLF).flush();
 	        
-	        Files.copy((Path) file.getValue((short) 1), out);
-	        out.flush();
+	       	 	Files.copy((Path) file.getValue((short) 1), out);
+	        	out.flush();
 	        
-	        writer.append(CRLF);
-	    }
+	        	writer.append(CRLF);
+	    	}
         
-	    writer.append("--" + BOUNDARY + "--").flush();
+	    	writer.append("--" + BOUNDARY + "--").flush();
 	    
-	    writer.close();
-	    out.close();
+	    	writer.close();
+	    	out.close();
 	    
-	    conn.connect();
+	    	conn.connect();
 	    
-	    // Get response
+	    	// Get response
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		
