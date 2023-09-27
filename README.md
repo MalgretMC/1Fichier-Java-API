@@ -44,8 +44,8 @@ There are two ways to create a FastMap :
 
       FastMap parameters = FastMap.of(
         "files", new FastMap[] { 
-          FastMap.of("url", "https://1fichier.com/?exemple",
-          FastMap.of("url", "https://1fichier.com/?exemple"
+          FastMap.of("url", "https://1fichier.com/?example",
+          FastMap.of("url", "https://1fichier.com/?example"
         }
       );
 
@@ -55,15 +55,19 @@ There are two ways to create a FastMap :
 
       FastMap parameters = FastMap.of(
         "urls", new String[] { 
-          "https://1fichier.com/?exemple",
-          "https://1fichier.com/?exemple"
+          "https://1fichier.com/?example",
+          "https://1fichier.com/?example"
         },
         "destination_folder_id", 0
       );
 
       FastMap result = instance.postRequest(PostRequest.MOVE_FILES, parameters); // In a try catch block
 
-- Upload a Unique File
+- Upload Files
+
+You can upload files without BEARER_TOKEN, but the files won't be stock in your account's folders.
+
+* Upload a Unique File
 
 /!\ Be Careful : Uploading an empty file will throw an error /!\
 
@@ -78,7 +82,7 @@ There are two ways to create a FastMap :
     
     String fileLink = (String) result[0].get("file_url");
 
-- Upload Files & Folders (New!)
+* Upload Multiple Files & Folders (New!)
 
 For this example, we take a folder that represents a minecraft server :
 
