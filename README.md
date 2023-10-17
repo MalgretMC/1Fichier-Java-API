@@ -49,7 +49,7 @@ There are two ways to create a FastMap :
         }
       );
 
-      FastMap result = instance.postRequest(PostRequest.DELETE_FILES, parameters); // In a try catch block
+      FastMap result = instance.makeRequest(PostRequest.DELETE_FILES, parameters); // In a try catch block
 
 - Move Files
 
@@ -61,7 +61,7 @@ There are two ways to create a FastMap :
         "destination_folder_id", 0
       );
 
-      FastMap result = instance.postRequest(PostRequest.MOVE_FILES, parameters); // In a try catch block
+      FastMap result = instance.makeRequest(PostRequest.MOVE_FILES, parameters); // In a try catch block
 
 - Upload Files
 
