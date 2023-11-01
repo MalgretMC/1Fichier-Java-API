@@ -6,7 +6,7 @@ Jar file can be found in files above : 1FichierAPI.jar
 
 You can check 1Fichier Website's API here : https://api.1fichier.com/
 
-/!\ Free Users can only use Upload System /!\
+⚠️ Free Users can only use Upload System ⚠️
 
 # Create Instance
 
